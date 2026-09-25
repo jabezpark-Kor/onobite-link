@@ -16,7 +16,7 @@ type BookmarkEditableFields = Pick<Bookmark, "folderId" | "title" | "description
 type BookmarksContextValue = {
   bookmarks: Bookmark[];
   addBookmark: (bookmark: Omit<Bookmark, "id">) => Promise<Bookmark | null>;
-  removeBookmark: (id: string) => void;
+  removeBookmark: (id: string) => Promise<void>;
   updateBookmark: (id: string, updates: BookmarkEditableFields) => Promise<void>;
 };
 
@@ -79,7 +79,10 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const removeBookmark = (id: string) => {
+  const removeBookmark = async (id: string) => {
+    const supabase = createClient();
+    const { error } = await supabase.from("links").delete().eq("id", id);
+    if (error) return;
     setBookmarks((prev) => prev.filter((bookmark) => bookmark.id !== id));
   };
 
