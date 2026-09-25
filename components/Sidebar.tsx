@@ -25,9 +25,9 @@ export default function Sidebar() {
     }
   };
 
-  const handleConfirmEdit = (name: string) => {
+  const handleConfirmEdit = async (name: string) => {
     if (!editingFolder) return;
-    renameFolder(editingFolder.id, name);
+    await renameFolder(editingFolder.id, name);
     setEditingFolder(null);
   };
 
