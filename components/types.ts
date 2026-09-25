@@ -8,4 +8,6 @@ export type Bookmark = {
   title: string;
   url: string;
   folderId: string;
+  description?: string;
+  thumbnailUrl?: string;
 };

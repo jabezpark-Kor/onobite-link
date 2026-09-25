@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import LinkGrid from "@/components/LinkGrid";
-import { bookmarks, folders } from "@/components/data";
 
 export default function Home() {
   return (
@@ -10,7 +9,7 @@ export default function Home() {
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 px-6 pt-10 pb-6">
-          <LinkGrid bookmarks={bookmarks} folders={folders} />
+          <LinkGrid />
         </main>
       </div>
     </div>

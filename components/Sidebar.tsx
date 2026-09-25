@@ -119,6 +119,7 @@ export default function Sidebar() {
         onConfirm={handleConfirmDelete}
       />
       <EditFolderModal
+        key={editingFolder?.id ?? "none"}
         folderName={editingFolder?.name ?? null}
         onCancel={() => setEditingFolder(null)}
         onConfirm={handleConfirmEdit}
