@@ -12,11 +12,11 @@ export default async function FolderPage(
   );
 
   return (
-    <div className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
+    <div className="flex flex-1 flex-col bg-[var(--bg)]">
       <Header />
       <div className="flex flex-1">
         <Sidebar folders={folders} />
-        <main className="flex-1 p-6">
+        <main className="flex-1 px-6 pt-10 pb-6">
           <LinkGrid bookmarks={folderBookmarks} folders={folders} />
         </main>
       </div>

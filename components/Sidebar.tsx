@@ -12,19 +12,19 @@ export default function Sidebar({ folders }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="flex w-56 flex-col gap-1 border-r border-black/[.08] p-4 dark:border-white/[.145]">
+    <aside className="flex w-56 flex-col gap-1 border-r border-[var(--border)] p-4">
       <Link
         href="/"
-        className={`rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
+        className={`rounded-md px-3 py-2 text-left text-sm transition-colors duration-150 ${
           pathname === "/"
-            ? "bg-foreground text-background"
-            : "text-zinc-600 hover:bg-black/[.04] dark:text-zinc-400 dark:hover:bg-[#1a1a1a]"
+            ? "bg-[var(--hover-bg)] font-semibold text-[var(--text)]"
+            : "font-medium text-[var(--text-sub)] hover:bg-[var(--hover-bg)]"
         }`}
       >
         ALL
       </Link>
       <div className="mt-4 flex flex-col gap-1">
-        <span className="px-3 text-xs font-semibold uppercase tracking-wide text-zinc-400 dark:text-zinc-500">
+        <span className="px-3 text-xs font-semibold uppercase tracking-wide text-[var(--text-sub)]">
           폴더
         </span>
         {folders.map((folder) => {
@@ -34,10 +34,10 @@ export default function Sidebar({ folders }: SidebarProps) {
             <Link
               key={folder.id}
               href={href}
-              className={`rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
+              className={`rounded-md px-3 py-2 text-left text-sm transition-colors duration-150 ${
                 isActive
-                  ? "bg-foreground text-background"
-                  : "text-zinc-600 hover:bg-black/[.04] dark:text-zinc-400 dark:hover:bg-[#1a1a1a]"
+                  ? "bg-[var(--hover-bg)] font-semibold text-[var(--text)]"
+                  : "font-medium text-[var(--text-sub)] hover:bg-[var(--hover-bg)]"
               }`}
             >
               {folder.name}

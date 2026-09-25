@@ -20,7 +20,7 @@ export default function NewLinkForm({ folders }: NewLinkFormProps) {
       <div className="flex flex-col gap-2">
         <label
           htmlFor="link-url"
-          className="text-sm font-medium text-zinc-600 dark:text-zinc-400"
+          className="text-sm font-medium text-[var(--text-sub)]"
         >
           링크 주소
         </label>
@@ -30,13 +30,13 @@ export default function NewLinkForm({ folders }: NewLinkFormProps) {
           value={url}
           onChange={(event) => setUrl(event.target.value)}
           placeholder="https://example.com"
-          className="rounded-lg border border-black/[.08] px-3 py-2 text-sm text-black outline-none focus:border-foreground dark:border-white/[.145] dark:bg-black dark:text-zinc-50"
+          className="rounded-md border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2 text-base text-[var(--text)] outline-none transition-colors duration-150 placeholder:text-[var(--placeholder)] focus:border-[var(--accent)]"
         />
       </div>
       <div className="flex flex-col gap-2">
         <label
           htmlFor="link-folder"
-          className="text-sm font-medium text-zinc-600 dark:text-zinc-400"
+          className="text-sm font-medium text-[var(--text-sub)]"
         >
           폴더
         </label>
@@ -44,7 +44,7 @@ export default function NewLinkForm({ folders }: NewLinkFormProps) {
           id="link-folder"
           value={folderId}
           onChange={(event) => setFolderId(event.target.value)}
-          className="rounded-lg border border-black/[.08] px-3 py-2 text-sm text-black outline-none focus:border-foreground dark:border-white/[.145] dark:bg-black dark:text-zinc-50"
+          className="rounded-md border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2 text-base text-[var(--text)] outline-none transition-colors duration-150 focus:border-[var(--accent)]"
         >
           {folders.map((folder) => (
             <option key={folder.id} value={folder.id}>
@@ -56,7 +56,7 @@ export default function NewLinkForm({ folders }: NewLinkFormProps) {
       <button
         type="button"
         onClick={handleSave}
-        className="mt-2 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc]"
+        className="mt-2 rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white transition-colors duration-150 hover:bg-[var(--accent-hover)]"
       >
         저장
       </button>

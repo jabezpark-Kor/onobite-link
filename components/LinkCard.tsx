@@ -18,23 +18,21 @@ export default function LinkCard({ bookmark, folderName }: LinkCardProps) {
       href={bookmark.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex flex-col gap-3 rounded-xl border border-black/[.08] p-4 transition-colors hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
+      className="flex flex-col gap-3 rounded-lg border border-[var(--border)] bg-[var(--card-bg)] p-4 transition-colors duration-150 hover:bg-[var(--hover-bg)]"
     >
       <div className="flex items-center justify-between">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground text-sm font-semibold text-background">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--accent)] text-sm font-semibold text-white">
           {bookmark.title.charAt(0)}
         </div>
-        <span className="rounded-full bg-black/[.06] px-2 py-1 text-xs font-medium text-zinc-600 dark:bg-white/[.08] dark:text-zinc-400">
+        <span className="rounded px-2 py-0.5 text-[13px] font-medium text-[var(--text)] bg-[var(--hover-bg)]">
           {folderName}
         </span>
       </div>
       <div className="flex flex-col gap-1">
-        <h3 className="truncate text-sm font-semibold text-black dark:text-zinc-50">
+        <h3 className="truncate text-sm font-semibold text-[var(--text)]">
           {bookmark.title}
         </h3>
-        <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
-          {hostname}
-        </p>
+        <p className="truncate text-xs text-[var(--text-sub)]">{hostname}</p>
       </div>
     </a>
   );
