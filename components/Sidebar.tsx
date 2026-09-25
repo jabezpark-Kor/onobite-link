@@ -5,13 +5,15 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useFolders } from "./FoldersProvider";
 import ConfirmDeleteFolderModal from "./ConfirmDeleteFolderModal";
+import EditFolderModal from "./EditFolderModal";
 import type { Folder } from "./types";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { folders, removeFolder } = useFolders();
+  const { folders, removeFolder, renameFolder } = useFolders();
   const [pendingDelete, setPendingDelete] = useState<Folder | null>(null);
+  const [editingFolder, setEditingFolder] = useState<Folder | null>(null);
 
   const handleConfirmDelete = () => {
     if (!pendingDelete) return;
@@ -21,6 +23,12 @@ export default function Sidebar() {
     if (pathname === deletedHref) {
       router.push("/");
     }
+  };
+
+  const handleConfirmEdit = (name: string) => {
+    if (!editingFolder) return;
+    renameFolder(editingFolder.id, name);
+    setEditingFolder(null);
   };
 
   return (
@@ -61,6 +69,25 @@ export default function Sidebar() {
               </Link>
               <button
                 type="button"
+                onClick={() => setEditingFolder(folder)}
+                aria-label={`${folder.name} 폴더 이름 수정`}
+                className="rounded p-1 text-[var(--text-sub)] opacity-0 transition-opacity duration-150 hover:text-[var(--accent)] group-hover:opacity-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                >
+                  <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                </svg>
+              </button>
+              <button
+                type="button"
                 onClick={() => setPendingDelete(folder)}
                 aria-label={`${folder.name} 폴더 삭제`}
                 className="mr-1 rounded p-1 text-[var(--text-sub)] opacity-0 transition-opacity duration-150 hover:text-[var(--error)] group-hover:opacity-100"
@@ -90,6 +117,11 @@ export default function Sidebar() {
         folderName={pendingDelete?.name ?? null}
         onCancel={() => setPendingDelete(null)}
         onConfirm={handleConfirmDelete}
+      />
+      <EditFolderModal
+        folderName={editingFolder?.name ?? null}
+        onCancel={() => setEditingFolder(null)}
+        onConfirm={handleConfirmEdit}
       />
     </aside>
   );
