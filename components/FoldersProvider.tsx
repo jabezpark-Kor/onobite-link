@@ -14,7 +14,7 @@ import { createClient } from "@/utils/supabase/client";
 type FoldersContextValue = {
   folders: Folder[];
   addFolder: (name: string) => Promise<Folder | null>;
-  removeFolder: (id: string) => void;
+  removeFolder: (id: string) => Promise<void>;
   renameFolder: (id: string, name: string) => Promise<void>;
 };
 
@@ -56,7 +56,10 @@ export function FoldersProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const removeFolder = (id: string) => {
+  const removeFolder = async (id: string) => {
+    const supabase = createClient();
+    const { error } = await supabase.from("folders").delete().eq("id", id);
+    if (error) return;
     setFolders((prev) => prev.filter((folder) => folder.id !== id));
   };
 
