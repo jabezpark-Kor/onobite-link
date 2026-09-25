@@ -7,6 +7,7 @@ import { folders as initialFolders } from "./data";
 type FoldersContextValue = {
   folders: Folder[];
   addFolder: (name: string) => Folder;
+  removeFolder: (id: string) => void;
 };
 
 const FoldersContext = createContext<FoldersContextValue | null>(null);
@@ -25,8 +26,12 @@ export function FoldersProvider({ children }: { children: ReactNode }) {
     return newFolder;
   };
 
+  const removeFolder = (id: string) => {
+    setFolders((prev) => prev.filter((folder) => folder.id !== id));
+  };
+
   return (
-    <FoldersContext.Provider value={{ folders, addFolder }}>
+    <FoldersContext.Provider value={{ folders, addFolder, removeFolder }}>
       {children}
     </FoldersContext.Provider>
   );

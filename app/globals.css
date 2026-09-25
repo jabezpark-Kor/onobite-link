@@ -11,7 +11,8 @@
   --accent: #1a73a6;
   --accent-hover: #14607f;
   --hover-bg: #f1f1ef;
-  --error: #eb5757;
+  --error: #d64545;
+  --error-hover: #c23b3b;
   --success: #4dab9a;
 }
 
