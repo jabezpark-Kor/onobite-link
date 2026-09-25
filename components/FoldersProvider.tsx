@@ -1,30 +1,59 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import type { Folder } from "./types";
-import { folders as initialFolders } from "./data";
+import { createClient } from "@/utils/supabase/client";
 
 type FoldersContextValue = {
   folders: Folder[];
-  addFolder: (name: string) => Folder;
+  addFolder: (name: string) => Promise<Folder | null>;
   removeFolder: (id: string) => void;
   renameFolder: (id: string, name: string) => void;
 };
 
 const FoldersContext = createContext<FoldersContextValue | null>(null);
 
-function createFolderId(name: string) {
-  const slug = name.trim().toLowerCase().replace(/\s+/g, "-");
-  return `${slug}-${Date.now().toString(36)}`;
-}
-
 export function FoldersProvider({ children }: { children: ReactNode }) {
-  const [folders, setFolders] = useState<Folder[]>(initialFolders);
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const isAddingRef = useRef(false);
 
-  const addFolder = (name: string) => {
-    const newFolder: Folder = { id: createFolderId(name), name: name.trim() };
-    setFolders((prev) => [...prev, newFolder]);
-    return newFolder;
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("folders")
+      .select("id, name")
+      .order("created_at", { ascending: true })
+      .then(({ data, error }) => {
+        if (error || !data) return;
+        setFolders(data.map((row) => ({ id: String(row.id), name: row.name })));
+      });
+  }, []);
+
+  const addFolder = async (name: string) => {
+    const trimmed = name.trim();
+    if (!trimmed || isAddingRef.current) return null;
+    isAddingRef.current = true;
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("folders")
+        .insert({ name: trimmed })
+        .select("id, name")
+        .single();
+      if (error || !data) return null;
+      const newFolder: Folder = { id: String(data.id), name: data.name };
+      setFolders((prev) => [...prev, newFolder]);
+      return newFolder;
+    } finally {
+      isAddingRef.current = false;
+    }
   };
 
   const removeFolder = (id: string) => {

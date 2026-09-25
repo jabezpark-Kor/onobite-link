@@ -11,14 +11,20 @@ type NewFolderModalProps = {
 export default function NewFolderModal({ open, onClose }: NewFolderModalProps) {
   const { addFolder } = useFolders();
   const [name, setName] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   if (!open) return null;
 
-  const handleSave = () => {
-    if (!name.trim()) return;
-    addFolder(name);
-    setName("");
-    onClose();
+  const handleSave = async () => {
+    if (!name.trim() || isSaving) return;
+    setIsSaving(true);
+    try {
+      await addFolder(name);
+      setName("");
+      onClose();
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -53,16 +59,18 @@ export default function NewFolderModal({ open, onClose }: NewFolderModalProps) {
           <button
             type="button"
             onClick={handleCancel}
-            className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text)] transition-colors duration-150 hover:bg-[var(--hover-bg)]"
+            disabled={isSaving}
+            className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text)] transition-colors duration-150 hover:bg-[var(--hover-bg)] disabled:cursor-not-allowed disabled:opacity-60"
           >
             취소
           </button>
           <button
             type="button"
             onClick={handleSave}
-            className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white transition-colors duration-150 hover:bg-[var(--accent-hover)]"
+            disabled={isSaving}
+            className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white transition-colors duration-150 hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            저장
+            {isSaving ? "저장 중..." : "저장"}
           </button>
         </div>
       </div>
