@@ -1,16 +1,16 @@
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import LinkGrid from "@/components/LinkGrid";
-import { bookmarks, folders } from "@/components/data";
+import NewLinkForm from "@/components/NewLinkForm";
+import { folders } from "@/components/data";
 
-export default function Home() {
+export default function NewLinkPage() {
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
       <Header />
       <div className="flex flex-1">
         <Sidebar folders={folders} />
-        <main className="flex-1 p-6">
-          <LinkGrid bookmarks={bookmarks} folders={folders} />
+        <main className="flex flex-1 justify-center p-6">
+          <NewLinkForm folders={folders} />
         </main>
       </div>
     </div>
