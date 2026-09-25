@@ -18,9 +18,11 @@ export default function NewLinkForm() {
   const { folders } = useFolders();
   const { addBookmark } = useBookmarks();
   const [url, setUrl] = useState("");
-  const [folderId, setFolderId] = useState(folders[0]?.id ?? "");
+  const [selectedFolderId, setSelectedFolderId] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const folderId = selectedFolderId || folders[0]?.id || "";
 
   const handleSave = async () => {
     if (!url.trim() || !folderId) return;
@@ -39,13 +41,18 @@ export default function NewLinkForm() {
         return;
       }
 
-      addBookmark({
+      const saved = await addBookmark({
         title: data.title,
         url: data.url,
         folderId,
         description: data.description ?? undefined,
         thumbnailUrl: data.thumbnailUrl ?? undefined,
       });
+
+      if (!saved) {
+        setError("링크를 저장하지 못했습니다.");
+        return;
+      }
 
       router.push(`/folder/${folderId}`);
     } catch {
@@ -84,7 +91,7 @@ export default function NewLinkForm() {
         <select
           id="link-folder"
           value={folderId}
-          onChange={(event) => setFolderId(event.target.value)}
+          onChange={(event) => setSelectedFolderId(event.target.value)}
           disabled={isSaving}
           className="rounded-md border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2 text-base text-[var(--text)] outline-none transition-colors duration-150 focus:border-[var(--accent)] disabled:opacity-60"
         >
