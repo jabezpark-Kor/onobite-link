@@ -17,7 +17,7 @@ type BookmarksContextValue = {
   bookmarks: Bookmark[];
   addBookmark: (bookmark: Omit<Bookmark, "id">) => Promise<Bookmark | null>;
   removeBookmark: (id: string) => void;
-  updateBookmark: (id: string, updates: BookmarkEditableFields) => void;
+  updateBookmark: (id: string, updates: BookmarkEditableFields) => Promise<void>;
 };
 
 const BookmarksContext = createContext<BookmarksContextValue | null>(null);
@@ -83,7 +83,17 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
     setBookmarks((prev) => prev.filter((bookmark) => bookmark.id !== id));
   };
 
-  const updateBookmark = (id: string, updates: BookmarkEditableFields) => {
+  const updateBookmark = async (id: string, updates: BookmarkEditableFields) => {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("links")
+      .update({
+        title: updates.title,
+        description: updates.description || null,
+        folder_id: Number(updates.folderId),
+      })
+      .eq("id", id);
+    if (error) return;
     setBookmarks((prev) =>
       prev.map((bookmark) =>
         bookmark.id === id ? { ...bookmark, ...updates } : bookmark,
