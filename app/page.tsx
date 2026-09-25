@@ -8,7 +8,7 @@ export default function Home() {
     <div className="flex flex-1 flex-col bg-[var(--bg)]">
       <Header />
       <div className="flex flex-1">
-        <Sidebar folders={folders} />
+        <Sidebar />
         <main className="flex-1 px-6 pt-10 pb-6">
           <LinkGrid bookmarks={bookmarks} folders={folders} />
         </main>

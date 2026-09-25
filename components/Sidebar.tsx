@@ -2,14 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { Folder } from "./types";
+import { useFolders } from "./FoldersProvider";
 
-type SidebarProps = {
-  folders: Folder[];
-};
-
-export default function Sidebar({ folders }: SidebarProps) {
+export default function Sidebar() {
   const pathname = usePathname();
+  const { folders } = useFolders();
 
   return (
     <aside className="flex w-56 flex-col gap-1 border-r border-[var(--border)] p-4">

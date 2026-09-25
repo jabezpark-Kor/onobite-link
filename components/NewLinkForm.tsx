@@ -1,13 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { Folder } from "./types";
+import { useFolders } from "./FoldersProvider";
 
-type NewLinkFormProps = {
-  folders: Folder[];
-};
-
-export default function NewLinkForm({ folders }: NewLinkFormProps) {
+export default function NewLinkForm() {
+  const { folders } = useFolders();
   const [url, setUrl] = useState("");
   const [folderId, setFolderId] = useState(folders[0]?.id ?? "");
 
