@@ -36,7 +36,7 @@ export const createClient = async (request: NextRequest) => {
   // Refresh the auth session if one exists. Keep this call directly after
   // createServerClient with no other code in between, or session refresh
   // can silently break (per Supabase's SSR guidance).
-  await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  return supabaseResponse
+  return { response: supabaseResponse, user }
 };
