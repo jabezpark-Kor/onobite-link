@@ -108,6 +108,14 @@ export default function LoginForm() {
         >
           {isSubmitting ? "로그인 중..." : "로그인"}
         </button>
+        <p className="text-center text-sm">
+          <Link
+            href="/forgot-password"
+            className="text-[var(--accent)] hover:underline"
+          >
+            비밀번호 찾기
+          </Link>
+        </p>
         <p className="text-center text-sm text-[var(--text-sub)]">
           아직 계정이 없으신가요?{" "}
           <Link href="/signup" className="text-[var(--accent)] hover:underline">
