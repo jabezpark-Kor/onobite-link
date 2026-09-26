@@ -7,6 +7,7 @@ import { useFolders } from "./FoldersProvider";
 import ConfirmDeleteFolderModal from "./ConfirmDeleteFolderModal";
 import EditFolderModal from "./EditFolderModal";
 import type { Folder } from "./types";
+import { createClient } from "@/utils/supabase/client";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -29,6 +30,12 @@ export default function Sidebar() {
     if (!editingFolder) return;
     await renameFolder(editingFolder.id, name);
     setEditingFolder(null);
+  };
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
   };
 
   return (
@@ -113,6 +120,13 @@ export default function Sidebar() {
           );
         })}
       </div>
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="mt-auto rounded-md px-3 py-2 text-left text-sm font-medium text-[var(--text-sub)] transition-colors duration-150 hover:bg-[var(--hover-bg)]"
+      >
+        로그아웃
+      </button>
       <ConfirmDeleteFolderModal
         folderName={pendingDelete?.name ?? null}
         onCancel={() => setPendingDelete(null)}
